@@ -4,6 +4,9 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Envelope;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -79,8 +82,12 @@ public class CphBusinessJSONSender {
             //response = cphBuisnessJson.call("{\"ssn\":1605789787,\"creditScore\":598,\"loanAmount\":10.0,\"loanDuration\":360}");
             System.out.println(" [.] Got response back '" + response + "'");
 
-            //send the response to the normalizer :)
+            //before sending the message, add the name of the bank to it
+            response = addBankNameJSON(response, "BankOfNorrebro");
 
+            //send the response to the normalizer :)
+            NormalizerSender nz = new NormalizerSender();
+            nz.sendToNormalizer(response);
 
         }
         catch  (IOException | TimeoutException | InterruptedException e) {
@@ -99,5 +106,9 @@ public class CphBusinessJSONSender {
                 catch (IOException _ignore) {}
             }
         }
+    }
+
+    private String addBankNameJSON(String message, String append) {
+        return "{"+"\"bank\":"+"\""+append+"\""+","+message.substring(1, message.length());
     }
 }
