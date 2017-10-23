@@ -12,7 +12,7 @@ public class MessageConverter {
 
     //public static void main(args[]) throws JSONException {
     public String processMessage(String mes) throws JSONException {
-        mes = "{\"ssn\":\"160578-9787\",\"creditScore\":598,\"loanAmount\":10.0,\"loanDuration\":6}";
+        //mes = "{\"ssn\":\"160578-9787\",\"creditScore\":598,\"loanAmount\":10.0,\"loanDuration\":6}";
         JSONObject loan_json = new JSONObject(mes);
         //strip it from the dash and make it an integer
         int ssn = Integer.parseInt(loan_json.getString("ssn").replace("-", ""));
